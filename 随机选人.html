@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>班级随机选人系统 | 表扬功能 + 爱心特效 + 一键集体表扬</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c34 0%, #0f2a23 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', 'PingFang SC', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #fffef7;
+            border-radius: 56px;
+            box-shadow: 0 30px 45px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        /* 头部 */
+        .header {
+            background: #2d5a4c;
+            padding: 26px 32px 22px;
+            text-align: center;
+            color: #fef0dd;
+            border-bottom: 5px solid #f0b27a;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .header h1 small {
+            font-size: 0.9rem;
+            background: #f0b27a;
+            color: #2c4a3b;
+            padding: 5px 14px;
+            border-radius: 60px;
+            font-weight: 500;
+        }
+
+        .rule-badge {
+            margin-top: 12px;
+            background: #1f4036;
+            display: inline-flex;
+            gap: 18px;
+            padding: 6px 20px;
+            border-radius: 48px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* 两列布局 */
+        .two-columns {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* 左侧抽取区 */
+        .pick-area {
+            flex: 2.2;
+            min-width: 280px;
+            background: #fffaf2;
+            padding: 32px 28px;
+            border-right: 1px solid #eee2d2;
+            position: relative;
+        }
+
+        .result-card {
+            background: #fff2e4;
+            border-radius: 48px;
+            padding: 24px 20px;
+            margin-bottom: 32px;
+            text-align: center;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid #ffe0be;
+        }
+
+        .result-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #c2833b;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .selected-area {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            min-height: 100px;
+        }
+
+        .name-bubble {
+            background: white;
+            border-radius: 100px;
+            padding: 10px 26px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #c23d1f;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid #f3b33d;
+            transition: 0.1s ease;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .praise-btn, .batch-praise-btn {
+            background: #f7b787;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #4c2a1a;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .praise-btn:hover, .batch-praise-btn:hover {
+            background: #f09b58;
+            transform: scale(1.02);
+        }
+
+        .batch-praise-btn {
+            background: #e6a17a;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            margin-top: 8px;
+        }
+
+        .placeholder-tip {
+            color: #c2aa8a;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        /* 爱心浮动动画 (不遮挡人名) */
+        .heart-float {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2.2rem;
+            z-index: 1000;
+            animation: floatUpLove 1.2s ease-out forwards;
+            filter: drop-shadow(0 0 4px rgba(255, 80, 120, 0.5));
+        }
+
+        @keyframes floatUpLove {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0.7);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-40px) scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0.8);
+            }
+        }
+
+        /* 控制栏 */
+        .control-bar {
+            background: #f7efe4;
+            border-radius: 48px;
+            padding: 20px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 24px;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .count-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .count-group label {
+            font-weight: 700;
+            color: #6a4c2c;
+            font-size: 0.85rem;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 60px;
+            padding: 4px 12px;
+            border: 1px solid #ebd5ba;
+        }
+
+        .stepper button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: #ece0d0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.1s;
+            color: #5a3e25;
+        }
+
+        .stepper button:hover {
+            background: #ddceb8;
+        }
+
+        .stepper input {
+            width: 80px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: none;
+            outline: none;
+            font-family: monospace;
+            background: transparent;
+        }
+
+        .action-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.12s linear;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #dc8c3a;
+            color: white;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: #c57228;
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: #e4d5c2;
+            color: #4f3a27;
+        }
+
+        .btn-secondary:hover {
+            background: #d6c4ae;
+        }
+
+        .info-note {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 18px;
+            color: #b69062;
+            background: #f9efe3;
+            padding: 8px;
+            border-radius: 32px;
+        }
+
+        /* 右侧面板 */
+        .info-area {
+            flex: 1.2;
+            min-width: 270px;
+            background: #fef8f0;
+            padding: 32px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .list-panel {
+            background: #ffffffdb;
+            border-radius: 32px;
+            padding: 8px 0 16px;
+            border: 1px solid #efe3d4;
+        }
+
+        .panel-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 10px 20px 12px 20px;
+            border-bottom: 2px dashed #f0dbb6;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .student-grid {
+            max-height: 240px;
+            overflow-y: auto;
+            padding: 14px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .student-chip {
+            background: #f2e7db;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #5c4a33;
+        }
+
+        .student-chip.teacher {
+            background: #f8deb5;
+            color: #b45f1f;
+            font-weight: 700;
+        }
+
+        /* 表扬记录面板 */
+        .praise-panel {
+            background: #ffffffdb;
+            border-radius: 32px;
+            padding: 8px 0 12px;
+            border: 1px solid #efe3d4;
+        }
+
+        .praise-list {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .praise-record {
+            background: #fff0e0;
+            border-radius: 28px;
+            padding: 8px 14px;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #f3a683;
+        }
+
+        .praise-name {
+            font-weight: 700;
+            color: #c23d1f;
+        }
+
+        .praise-time {
+            font-size: 0.65rem;
+            color: #a07d58;
+        }
+
+        .clear-praise {
+            background: none;
+            border: none;
+            color: #c98642;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .delete-single {
+            background: none;
+            border: none;
+            color: #c95a3a;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 0 6px;
+            border-radius: 20px;
+        }
+        .delete-single:hover {
+            background: #eedbcb;
+        }
+
+        footer {
+            background: #e7dbcc;
+            text-align: center;
+            padding: 14px;
+            font-size: 0.7rem;
+            color: #856e50;
+        }
+
+        @media (max-width: 780px) {
+            .name-bubble { font-size: 1rem; padding: 6px 16px; }
+            .praise-btn { padding: 3px 10px; font-size: 0.7rem; }
+            .btn { padding: 8px 18px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>
+            🎲 随机选人 · 暖心表扬系统
+            <small>60位同学 + 吴年生老师</small>
+        </h1>
+        <div class="rule-badge">
+            🔁 可重复抽取 | ✨ 单次抽取不重复 | 🫶 个人表扬/集体表扬 · 爱心动画
+        </div>
+    </div>
+
+    <div class="two-columns">
+        <!-- 左侧核心区域 -->
+        <div class="pick-area">
+            <div class="result-card">
+                <div class="result-label">🏆 本次抽选结果 🏆</div>
+                <div id="selectedDisplay" class="selected-area">
+                    <div class="placeholder-tip">✨ 点击「随机抽取」✨</div>
+                </div>
+                <div style="margin-top: 16px;">
+                    <button id="batchPraiseBtn" class="batch-praise-btn" style="display: none;">🎉 一起表扬 (当前全部) 🎉</button>
+                </div>
+            </div>
+            <div class="control-bar">
+                <div class="count-group">
+                    <label>👥 抽取人数</label>
+                    <div class="stepper">
+                        <button id="decCount">−</button>
+                        <input type="number" id="pickCount" value="1" min="1" max="61" step="1">
+                        <button id="incCount">+</button>
+                    </div>
+                </div>
+                <div class="action-group">
+                    <button id="pickBtn" class="btn btn-primary">🎯 随机抽取</button>
+                    <button id="clearAllHistoryBtn" class="btn btn-secondary">🗑️ 清空抽选记录</button>
+                </div>
+            </div>
+            <div class="info-note">
+                💡 点击人名旁的 ❤️ 单独表扬；点击「一起表扬」可同时表扬当前抽中的所有同学，爱心齐飞！
+            </div>
+        </div>
+
+        <!-- 右侧信息区：名单 + 抽选历史 + 表扬记录 -->
+        <div class="info-area">
+            <div class="list-panel">
+                <div class="panel-header">
+                    📋 参选名单 (60人+吴年生)
+                    <span style="font-size:0.7rem; font-weight:normal;" id="totalCountSpan">61人</span>
+                </div>
+                <div id="studentList" class="student-grid"></div>
+            </div>
+
+            <div class="list-panel">
+                <div class="panel-header">
+                    📜 抽选历史记录
+                    <button id="smallClearHistory" class="clear-praise">清空全部</button>
+                </div>
+                <div id="historyList" class="praise-list" style="max-height: 180px;">
+                    <div style="color:#bfaa8d; text-align:center; padding:20px;">暂无抽取记录</div>
+                </div>
+            </div>
+
+            <div class="praise-panel">
+                <div class="panel-header">
+                    💖 表扬光荣榜
+                    <button id="clearAllPraiseBtn" class="clear-praise">清空表扬记录</button>
+                </div>
+                <div id="praiseList" class="praise-list">
+                    <div style="color:#bfaa8d; text-align:center; padding:20px;">✨ 暂无表扬记录，快给表现优秀的同学点赞吧 ✨</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        🫶 点击爱心表扬同学，弹出爱心动画；一键集体表扬，爱心同时飞舞，被表扬者进入光荣榜。
+    </footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 最终名单 (60名学生 + 吴年生老师)
+    // --------------------------------------------------------------
+    const students = [
+        "陈庆楠", "陈奕文", "陈子菡", "戴淳曦", "翟轩", "杜笑融", "郭悦涵", "郝博韬", "何泽浩", "后鑫雅",
+        "胡皓翔", "季宁远", "井浩哲", "孔佳芮", "来小杨", "李涂韵", "梁徐嘉", "刘瀚聪", "刘鑫焱", "鲁雨昊",
+        "吕廷舟", "马朔", "马奕阳", "潘思茗", "乔海盛", "阮孙唯", "邵熙珑", "沈牧晨", "孙晨皓", "孙立恒",
+        "唐邦铭", "宛鸿旭", "汪彤", "汪乐知", "汪艺欣", "王晟睿", "王晨冉", "王旭升", "王奕晨", "王之瑜",
+        "魏新浩", "温鉴杰", "武照涵", "武子涵", "吴辰悦", "邬语昕", "徐凡昊", "薛宸皓", "姚泓嘉", "姚忆铭",
+        "姚智中", "尹子昊", "占泰铭", "张陈熙", "张景行", "郑浩明", "周笃敬", "周真辰", "周梓豪", "朱兴邦"
+    ];
+    const teacherName = "吴年生";
+    const FULL_LIST = [...students, teacherName];
+    const TOTAL_PEOPLE = FULL_LIST.length;
+
+    // ----- 抽选历史存储 -----
+    let historyRecords = [];     // { id, names, timestamp }
+    let nextHistoryId = 1;
+
+    // ----- 表扬记录存储 (被表扬人单独记录)-----
+    let praiseRecords = [];      // { id, name, timestamp }
+    let nextPraiseId = 1;
+    
+    // 当前抽中的名单（用于批量表扬）
+    let currentSelectedNames = [];
+
+    // ---------- DOM 元素 ----------
+    const selectedDisplay = document.getElementById("selectedDisplay");
+    const pickCountInput = document.getElementById("pickCount");
+    const decBtn = document.getElementById("decCount");
+    const incBtn = document.getElementById("incCount");
+    const pickBtn = document.getElementById("pickBtn");
+    const clearAllHistoryBtn = document.getElementById("clearAllHistoryBtn");
+    const smallClearHistory = document.getElementById("smallClearHistory");
+    const historyListDiv = document.getElementById("historyList");
+    const studentListDiv = document.getElementById("studentList");
+    const totalCountSpan = document.getElementById("totalCountSpan");
+    const praiseListDiv = document.getElementById("praiseList");
+    const clearAllPraiseBtn = document.getElementById("clearAllPraiseBtn");
+    const batchPraiseBtn = document.getElementById("batchPraiseBtn");
+
+    // ---------- 辅助函数 ----------
+    function getRandomDistinct(arr, n) {
+        if (n > arr.length) n = arr.length;
+        const shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, n);
+    }
+
+    function formatTime(date) {
+        return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    // 爱心动画 (完全不遮挡人名)
+    function showHeartAnimation(x, y) {
+        const heart = document.createElement('div');
+        heart.className = 'heart-float';
+        heart.innerHTML = '❤️';
+        heart.style.left = (x - 20) + 'px';
+        heart.style.top = (y - 20) + 'px';
+        document.body.appendChild(heart);
+        setTimeout(() => {
+            if (heart.parentNode) heart.remove();
+        }, 1200);
+    }
+    
+    // 批量爱心动画：围绕屏幕中心区域随机位置飘爱心
+    function showBatchHearts(count) {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        const offsetRange = 150;
+        for (let i = 0; i < Math.min(count, 20); i++) {
+            setTimeout(() => {
+                const randX = centerX + (Math.random() - 0.5) * offsetRange * 2;
+                const randY = centerY + (Math.random() - 0.5) * offsetRange;
+                showHeartAnimation(randX, randY);
+            }, i * 60);
+        }
+    }
+
+    // 核心表扬记录
+    function addPraiseRecord(name, showAnimation = true, eventX = null, eventY = null) {
+        if (showAnimation) {
+            let clientX, clientY;
+            if (eventX !== null && eventY !== null) {
+                clientX = eventX;
+                clientY = eventY;
+            } else {
+                clientX = window.innerWidth / 2;
+                clientY = window.innerHeight / 2;
+            }
+            showHeartAnimation(clientX, clientY);
+        }
+        praiseRecords.push({
+            id: nextPraiseId++,
+            name: name,
+            timestamp: new Date()
+        });
+        renderPraiseList();
+    }
+    
+    // 批量表扬当前抽中的所有成员
+    function batchPraiseCurrent() {
+        if (!currentSelectedNames || currentSelectedNames.length === 0) {
+            alert("当前没有抽选结果，请先点击「随机抽取」再一起表扬～");
+            return;
+        }
+        // 批量记录表扬 + 批量爱心特效
+        for (let name of currentSelectedNames) {
+            addPraiseRecord(name, false);  // 先不单独弹爱心，最后统一特效
+        }
+        showBatchHearts(currentSelectedNames.length);
+        renderPraiseList();
+        // 可选提示
+        const msg = `✨ 一起表扬了 ${currentSelectedNames.length} 位同学 ✨`;
+        const toast = document.createElement('div');
+        toast.innerText = msg;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '30px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.background = '#2d5a4c';
+        toast.style.color = 'white';
+        toast.style.padding = '10px 24px';
+        toast.style.borderRadius = '40px';
+        toast.style.fontWeight = 'bold';
+        toast.style.zIndex = '2000';
+        toast.style.fontSize = '0.9rem';
+        toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+    }
+    
+    // 渲染表扬光荣榜
+    function renderPraiseList() {
+        if (!praiseListDiv) return;
+        if (praiseRecords.length === 0) {
+            praiseListDiv.innerHTML = '<div style="color:#bfaa8d; text-align:center; padding:20px;">✨ 暂无表扬记录，快给表现优秀的同学点赞吧 ✨</div>';
+            return;
+        }
+        praiseListDiv.innerHTML = "";
+        [...praiseRecords].reverse().forEach(record => {
+            const praiseItem = document.createElement("div");
+            praiseItem.className = "praise-record";
+            praiseItem.innerHTML = `
+                <span class="praise-name">❤️ ${record.name}</span>
+                <span class="praise-time">${formatTime(record.timestamp)}</span>
+            `;
+            praiseListDiv.appendChild(praiseItem);
+        });
+    }
+    
+    function clearAllPraise() {
+        if (confirm("确定要清空所有表扬记录吗？")) {
+            praiseRecords = [];
+            renderPraiseList();
+        }
+    }
+    
+    // ---------- 抽选相关渲染 ----------
+    function renderStudentList() {
+        studentListDiv.innerHTML = "";
+        FULL_LIST.forEach(name => {
+            const chip = document.createElement("div");
+            chip.className = "student-chip";
+            if (name === teacherName) {
+                chip.classList.add("teacher");
+                chip.innerHTML = "👨‍🏫 " + name;
+            } else {
+                chip.textContent = name;
+            }
+            studentListDiv.appendChild(chip);
+        });
+        totalCountSpan.innerText = `${TOTAL_PEOPLE}人`;
+    }
+
+    function renderHistory() {
+        if (historyRecords.length === 0) {
+            historyListDiv.innerHTML = '<div style="color:#bfaa8d; text-align:center; padding:20px;">✨ 暂无抽取记录 ✨</div>';
+            return;
+        }
+        historyListDiv.innerHTML = "";
+        [...historyRecords].reverse().forEach(record => {
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "praise-record";
+            const namesStr = record.names.join("、");
+            itemDiv.innerHTML = `
+                <span style="font-weight:600;">🎲 ${namesStr}</span>
+                <span style="font-size:0.65rem; color:#a4835c;">${formatTime(record.timestamp)}</span>
+                <button class="delete-single" data-id="${record.id}" style="background:none; border:none; color:#c95a3a; cursor:pointer; font-size:1rem;">✕</button>
+            `;
+            historyListDiv.appendChild(itemDiv);
+        });
+        document.querySelectorAll('.delete-single').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(btn.getAttribute('data-id'));
+                deleteHistoryById(id);
+            });
+        });
+    }
+    
+    function deleteHistoryById(id) {
+        const idx = historyRecords.findIndex(r => r.id === id);
+        if (idx !== -1) {
+            historyRecords.splice(idx, 1);
+            renderHistory();
+        }
+    }
+    
+    function clearAllHistory() {
+        if (confirm("清空所有抽选历史记录？")) {
+            historyRecords = [];
+            renderHistory();
+        }
+    }
+    
+    // 显示当前抽中的人，并为每个人添加上报表扬按钮，同时存储当前名单并控制批量按钮显示
+    function displaySelectedWithPraise(selectedNames) {
+        currentSelectedNames = selectedNames || [];
+        if (!selectedNames || selectedNames.length === 0) {
+            selectedDisplay.innerHTML = '<div class="placeholder-tip">✨ 点击「随机抽取」✨</div>';
+            batchPraiseBtn.style.display = 'none';
+            return;
+        }
+        batchPraiseBtn.style.display = 'inline-block';
+        selectedDisplay.innerHTML = "";
+        if (selectedNames.length === 1) {
+            const wrapper = document.createElement("div");
+            wrapper.className = "name-bubble";
+            const nameSpan = document.createElement("span");
+            nameSpan.textContent = selectedNames[0];
+            nameSpan.style.fontSize = "1.6rem";
+            nameSpan.style.fontWeight = "800";
+            const praiseBtn = document.createElement("button");
+            praiseBtn.textContent = "❤️ 表扬";
+            praiseBtn.className = "praise-btn";
+            praiseBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const rect = praiseBtn.getBoundingClientRect();
+                addPraiseRecord(selectedNames[0], true, rect.left + rect.width/2, rect.top + rect.height/2);
+            });
+            wrapper.appendChild(nameSpan);
+            wrapper.appendChild(praiseBtn);
+            selectedDisplay.appendChild(wrapper);
+        } else {
+            selectedNames.forEach(name => {
+                const bubble = document.createElement("div");
+                bubble.className = "name-bubble";
+                const nameSpan = document.createElement("span");
+                nameSpan.textContent = name;
+                nameSpan.style.fontSize = "1.2rem";
+                nameSpan.style.fontWeight = "bold";
+                const praiseBtn = document.createElement("button");
+                praiseBtn.textContent = "❤️";
+                praiseBtn.className = "praise-btn";
+                praiseBtn.style.fontSize = "1rem";
+                praiseBtn.style.padding = "4px 12px";
+                praiseBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const rect = praiseBtn.getBoundingClientRect();
+                    addPraiseRecord(name, true, rect.left + rect.width/2, rect.top + rect.height/2);
+                });
+                bubble.appendChild(nameSpan);
+                bubble.appendChild(praiseBtn);
+                selectedDisplay.appendChild(bubble);
+            });
+        }
+    }
+    
+    // 核心抽取逻辑
+    function performPick() {
+        let n = parseInt(pickCountInput.value, 10);
+        if (isNaN(n) || n < 1) n = 1;
+        if (n > TOTAL_PEOPLE) {
+            n = TOTAL_PEOPLE;
+            pickCountInput.value = TOTAL_PEOPLE;
+            alert(`抽取人数不能超过总人数(${TOTAL_PEOPLE}人)`);
+        }
+        const selected = getRandomDistinct(FULL_LIST, n);
+        displaySelectedWithPraise(selected);
+        historyRecords.push({
+            id: nextHistoryId++,
+            names: [...selected],
+            timestamp: new Date()
+        });
+        renderHistory();
+        pickBtn.style.transform = "scale(0.96)";
+        setTimeout(() => { pickBtn.style.transform = ""; }, 120);
+    }
+    
+    function adjustCount(delta) {
+        let val = parseInt(pickCountInput.value, 10);
+        if (isNaN(val)) val = 1;
+        let newVal = val + delta;
+        if (newVal < 1) newVal = 1;
+        if (newVal > TOTAL_PEOPLE) newVal = TOTAL_PEOPLE;
+        pickCountInput.value = newVal;
+    }
+    
+    function validatePickInput() {
+        let val = parseInt(pickCountInput.value, 10);
+        if (isNaN(val)) pickCountInput.value = 1;
+        else if (val < 1) pickCountInput.value = 1;
+        else if (val > TOTAL_PEOPLE) pickCountInput.value = TOTAL_PEOPLE;
+    }
+    
+    // 初始化
+    function init() {
+        renderStudentList();
+        renderHistory();
+        renderPraiseList();
+        displaySelectedWithPraise(null);
+        
+        pickCountInput.min = 1;
+        pickCountInput.max = TOTAL_PEOPLE;
+        pickCountInput.value = 1;
+        
+        decBtn.addEventListener("click", () => adjustCount(-1));
+        incBtn.addEventListener("click", () => adjustCount(1));
+        pickBtn.addEventListener("click", performPick);
+        clearAllHistoryBtn.addEventListener("click", clearAllHistory);
+        smallClearHistory.addEventListener("click", clearAllHistory);
+        clearAllPraiseBtn.addEventListener("click", clearAllPraise);
+        batchPraiseBtn.addEventListener("click", batchPraiseCurrent);
+        pickCountInput.addEventListener("input", validatePickInput);
+        pickCountInput.addEventListener("change", validatePickInput);
+        
+        document.addEventListener("keypress", (e) => {
+            if (e.key === "Enter" && document.activeElement?.type !== "number") {
+                performPick();
+            }
+        });
+    }
+    
+    init();
+</script>
+</body>
+</html>
