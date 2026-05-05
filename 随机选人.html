@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>班级随机选人系统 · 公告+评论区</title>
+    <title>班级互动系统 · 个性主页 + 集体表扬</title>
     <style>
         * {
             margin: 0;
@@ -65,7 +65,7 @@
             font-size: 0.9rem;
         }
 
-        /* 主应用界面 */
+        /* 主应用 */
         .app-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -78,7 +78,7 @@
 
         .header {
             background: #2d5a4c;
-            padding: 26px 32px 22px;
+            padding: 20px 32px 18px;
             text-align: center;
             color: #fef0dd;
             border-bottom: 5px solid #f0b27a;
@@ -87,7 +87,7 @@
 
         .user-info {
             position: absolute;
-            top: 20px;
+            top: 16px;
             right: 30px;
             background: #1f4036;
             padding: 6px 16px;
@@ -98,7 +98,7 @@
             align-items: center;
         }
 
-        .logout-btn, .settings-btn {
+        .logout-btn, .settings-btn, .profile-btn {
             background: none;
             border: none;
             color: #f0b27a;
@@ -108,25 +108,24 @@
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .rule-badge {
-            margin-top: 12px;
+            margin-top: 8px;
             background: #1f4036;
             display: inline-flex;
-            gap: 18px;
-            padding: 6px 20px;
+            gap: 16px;
+            padding: 4px 18px;
             border-radius: 48px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
         .two-columns {
@@ -134,7 +133,7 @@
             flex-wrap: wrap;
         }
 
-        /* 左侧区域：上半部抽选 + 下半部评论区 */
+        /* 左侧区域 */
         .pick-area {
             flex: 2.2;
             min-width: 320px;
@@ -145,7 +144,7 @@
         }
 
         .pick-top {
-            padding: 32px 28px 20px 28px;
+            padding: 28px 28px 16px 28px;
             border-bottom: 2px dashed #f0dbb6;
         }
 
@@ -158,40 +157,37 @@
         .result-card {
             background: #fff2e4;
             border-radius: 48px;
-            padding: 24px 20px;
-            margin-bottom: 32px;
+            padding: 20px 20px;
+            margin-bottom: 24px;
             text-align: center;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.03);
-            border: 1px solid #ffe0be;
         }
 
         .selected-area {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
-            gap: 14px;
-            min-height: 100px;
+            gap: 12px;
+            min-height: 90px;
         }
 
         .name-bubble {
             background: white;
             border-radius: 100px;
-            padding: 10px 26px;
-            font-size: 1.5rem;
+            padding: 8px 22px;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #c23d1f;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-            border-left: 6px solid #f3b33d;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #f3b33d;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .praise-btn, .batch-praise-btn {
             background: #f7b787;
             border: none;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
@@ -199,26 +195,20 @@
 
         .batch-praise-btn {
             background: #e6a17a;
-            font-size: 0.9rem;
-            padding: 8px 18px;
-            margin-top: 8px;
-        }
-
-        .placeholder-tip {
-            color: #c2aa8a;
-            font-size: 1.2rem;
+            font-size: 0.85rem;
+            padding: 6px 16px;
+            margin-top: 6px;
         }
 
         .control-bar {
             background: #f7efe4;
             border-radius: 48px;
-            padding: 20px 24px;
+            padding: 16px 20px;
             display: flex;
             flex-wrap: wrap;
-            align-items: flex-end;
-            gap: 24px;
+            align-items: center;
+            gap: 20px;
             justify-content: space-between;
-            margin-top: 10px;
         }
 
         .stepper {
@@ -226,25 +216,25 @@
             align-items: center;
             background: white;
             border-radius: 60px;
-            padding: 4px 12px;
+            padding: 2px 10px;
             border: 1px solid #ebd5ba;
         }
 
         .stepper button {
-            width: 40px;
-            height: 40px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: none;
             background: #ece0d0;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             cursor: pointer;
         }
 
         .stepper input {
-            width: 80px;
+            width: 70px;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             border: none;
             outline: none;
@@ -253,28 +243,21 @@
 
         .btn {
             border: none;
-            padding: 12px 28px;
+            padding: 10px 24px;
             border-radius: 60px;
             font-weight: 700;
             cursor: pointer;
         }
 
-        .btn-primary {
-            background: #dc8c3a;
-            color: white;
-        }
+        .btn-primary { background: #dc8c3a; color: white; }
+        .btn-secondary { background: #e4d5c2; color: #4f3a27; }
 
-        .btn-secondary {
-            background: #e4d5c2;
-            color: #4f3a27;
-        }
-
-        /* 右侧信息区 (不变) */
+        /* 右侧信息区 */
         .info-area {
             flex: 1.2;
             min-width: 270px;
             background: #fef8f0;
-            padding: 32px 20px;
+            padding: 28px 20px;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -283,14 +266,14 @@
         .list-panel {
             background: #ffffffdb;
             border-radius: 32px;
-            padding: 8px 0 16px;
+            padding: 6px 0 14px;
             border: 1px solid #efe3d4;
         }
 
         .panel-header {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            padding: 10px 20px 12px 20px;
+            padding: 8px 18px 10px 18px;
             border-bottom: 2px dashed #f0dbb6;
             display: flex;
             justify-content: space-between;
@@ -298,10 +281,10 @@
             flex-wrap: wrap;
         }
 
-        .student-grid, .comment-list {
+        .student-grid, .comment-list-scroll {
             max-height: 180px;
             overflow-y: auto;
-            padding: 12px 16px;
+            padding: 12px 14px;
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
@@ -309,18 +292,13 @@
 
         .student-chip {
             background: #f2e7db;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 40px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
             color: #5c4a33;
         }
-
-        .student-chip.teacher {
-            background: #f8deb5;
-            color: #b45f1f;
-            font-weight: 700;
-        }
+        .student-chip.teacher { background: #f8deb5; color: #b45f1f; font-weight: 700; }
 
         .praise-list {
             max-height: 160px;
@@ -334,18 +312,18 @@
         .praise-record, .comment-item {
             background: #fff0e0;
             border-radius: 28px;
-            padding: 8px 14px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-left: 4px solid #f3a683;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .comment-item {
             flex-direction: column;
             align-items: flex-start;
-            gap: 6px;
+            gap: 5px;
         }
 
         .comment-header {
@@ -362,94 +340,7 @@
             color: #4f3a27;
         }
 
-        .comment-time {
-            font-size: 0.65rem;
-            color: #a07d58;
-        }
-
-        .delete-single {
-            background: none;
-            border: none;
-            color: #c95a3a;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0 6px;
-        }
-
-        .clear-praise {
-            background: none;
-            border: none;
-            color: #c98642;
-            cursor: pointer;
-            font-size: 0.7rem;
-        }
-
-        /* 评论区样式 (左侧下半部) */
-        .announcement-area {
-            background: #fff3e4;
-            border-radius: 32px;
-            padding: 12px 18px;
-            margin-bottom: 20px;
-            border: 1px solid #ffdead;
-            position: relative;
-        }
-        .announcement-title {
-            font-weight: 800;
-            color: #b45f1f;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .announcement-text {
-            color: #5c3e1f;
-            font-size: 0.9rem;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        .edit-announcement {
-            background: #f0b27a;
-            border: none;
-            border-radius: 40px;
-            padding: 4px 12px;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-        .comment-input-area {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        .comment-input-area input {
-            flex: 1;
-            padding: 10px 16px;
-            border-radius: 40px;
-            border: 1px solid #ebd5ba;
-            outline: none;
-        }
-        .comment-list-scroll {
-            max-height: 240px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .heart-float {
-            position: fixed;
-            pointer-events: none;
-            font-size: 2rem;
-            z-index: 1000;
-            animation: floatUpLove 1.2s ease-out forwards;
-        }
-
-        @keyframes floatUpLove {
-            0% { opacity: 1; transform: translateY(0) scale(0.7); }
-            100% { opacity: 0; transform: translateY(-100px) scale(0.8); }
-        }
-
-        /* 模态框 */
+        /* 个性设置模态框 */
         .modal {
             display: none;
             position: fixed;
@@ -463,29 +354,65 @@
         .modal-content {
             background: white;
             border-radius: 48px;
-            padding: 30px;
+            padding: 24px;
             width: 340px;
             text-align: center;
         }
         .modal-content input, .modal-content textarea {
             width: 100%;
-            padding: 12px;
-            margin: 12px 0;
+            padding: 10px;
+            margin: 8px 0;
             border-radius: 40px;
             border: 1px solid #ccc;
         }
+        .avatar-option {
+            display: inline-block;
+            font-size: 2rem;
+            margin: 6px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: 0.1s;
+        }
+        .avatar-option.selected { background: #f3b33d; }
 
+        .announcement-area {
+            background: #fff3e4;
+            border-radius: 28px;
+            padding: 10px 16px;
+            margin-bottom: 18px;
+        }
+        .announcement-title {
+            font-weight: 800;
+            color: #b45f1f;
+            display: flex;
+            justify-content: space-between;
+        }
+        .edit-announcement { background: #f0b27a; border: none; border-radius: 30px; padding: 2px 10px; font-size: 0.7rem; cursor: pointer; }
+        .comment-input-area { display: flex; gap: 6px; margin-top: 12px; }
+        .comment-input-area input { flex:1; padding: 8px 14px; border-radius: 40px; border: 1px solid #ebd5ba; }
+
+        .heart-float {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2rem;
+            z-index: 1000;
+            animation: floatUpLove 1.2s ease-out forwards;
+        }
+        @keyframes floatUpLove {
+            0% { opacity: 1; transform: translateY(0) scale(0.7); }
+            100% { opacity: 0; transform: translateY(-100px) scale(0.8); }
+        }
         footer {
             background: #e7dbcc;
             text-align: center;
-            padding: 14px;
-            font-size: 0.7rem;
+            padding: 10px;
+            font-size: 0.65rem;
             color: #856e50;
         }
-
         @media (max-width: 780px) {
-            .name-bubble { font-size: 1rem; padding: 6px 16px; }
-            .btn { padding: 8px 18px; }
+            .name-bubble { font-size: 1rem; padding: 5px 14px; }
+            .btn { padding: 6px 16px; }
         }
     </style>
 </head>
@@ -493,13 +420,13 @@
 
 <!-- 登录界面 -->
 <div id="loginPanel" class="login-container">
-    <h2>🎓 班级随机选人系统</h2>
-    <p style="margin-bottom: 20px; color:#6a4c2c;">请输入您的真实姓名</p>
+    <h2>🎓 班级互动系统</h2>
+    <p style="margin-bottom: 20px;">请输入真实姓名</p>
     <input type="text" id="loginName" placeholder="姓名" autocomplete="off">
     <div id="passwordGroup" style="display: none;">
         <input type="password" id="loginPassword" placeholder="密码">
     </div>
-    <button id="loginBtn">进入课堂</button>
+    <button id="loginBtn">进入</button>
     <div id="loginError" class="error-msg"></div>
 </div>
 
@@ -508,116 +435,76 @@
     <div class="header">
         <div class="user-info">
             <span id="currentUserName"></span>
+            <button id="profileBtn" class="profile-btn">👤 我的主页</button>
             <button id="settingsBtn" class="settings-btn">🔐 修改密码</button>
-            <button id="logoutBtn" class="logout-btn">🚪 退出登录</button>
+            <button id="logoutBtn" class="logout-btn">🚪 退出</button>
         </div>
-        <h1>🎲 随机选人 · 暖心表扬系统 <small>60位同学 + 吴年生老师</small></h1>
-        <div class="rule-badge">🔁 可重复抽取 | ✨ 单次抽取不重复 | 🫶 个人/集体表扬 · 爱心动画</div>
+        <h1>🎲 随机选人 · 个性互动</h1>
+        <div class="rule-badge">🔁 可重复 | ✨ 单次不重复 | 🫶 表扬+集体祝福 | 💬 个性头像/昵称</div>
     </div>
 
     <div class="two-columns">
-        <!-- 左侧大面积：上半部抽选 + 下半部评论区+公告 -->
         <div class="pick-area">
             <div class="pick-top">
                 <div class="result-card">
-                    <div class="result-label">🏆 本次抽选结果 🏆</div>
-                    <div id="selectedDisplay" class="selected-area"><div class="placeholder-tip">✨ 点击「随机抽取」✨</div></div>
-                    <div style="margin-top: 16px;"><button id="batchPraiseBtn" class="batch-praise-btn" style="display:none;">🎉 一起表扬 (当前全部) 🎉</button></div>
+                    <div class="result-label">🏆 本次抽选结果</div>
+                    <div id="selectedDisplay" class="selected-area"><div class="placeholder-tip">✨ 点击抽取 ✨</div></div>
+                    <div><button id="batchPraiseBtn" class="batch-praise-btn" style="display:none;">🎉 一起表扬</button></div>
                 </div>
                 <div class="control-bar">
-                    <div class="count-group">
-                        <label>👥 抽取人数</label>
-                        <div class="stepper">
-                            <button id="decCount">−</button>
-                            <input type="number" id="pickCount" value="1" min="1">
-                            <button id="incCount">+</button>
-                        </div>
-                    </div>
-                    <div class="action-group">
-                        <button id="pickBtn" class="btn btn-primary">🎯 随机抽取</button>
-                        <button id="clearAllHistoryBtn" class="btn btn-secondary">🗑️ 清空抽选记录</button>
-                    </div>
+                    <div class="count-group"><label>抽取人数</label><div class="stepper"><button id="decCount">−</button><input type="number" id="pickCount" value="1" min="1"><button id="incCount">+</button></div></div>
+                    <div><button id="pickBtn" class="btn btn-primary">🎯 随机抽取</button><button id="clearAllHistoryBtn" class="btn btn-secondary">🗑️ 清空记录</button></div>
                 </div>
-                <div class="info-note" style="font-size:0.7rem; margin-top:18px; text-align:center;">💡 点击人名旁的 ❤️ 单独表扬；点击「一起表扬」集体表扬！</div>
             </div>
-
-            <!-- 下半部分：公告 + 评论区 -->
             <div class="pick-bottom">
-                <div class="announcement-area" id="announcementArea">
-                    <div class="announcement-title">
-                        📢 群公告
-                        <button id="editAnnounceBtn" class="edit-announcement" style="display: none;">编辑公告</button>
-                    </div>
-                    <div class="announcement-text" id="announcementText">暂无公告</div>
+                <div class="announcement-area">
+                    <div class="announcement-title">📢 群公告 <button id="editAnnounceBtn" class="edit-announcement" style="display:none;">编辑</button></div>
+                    <div id="announcementText">暂无公告</div>
                 </div>
-                <div style="margin-top: 16px;">
-                    <div style="font-weight: bold; margin-bottom: 8px;">💬 班级留言板</div>
-                    <div class="comment-input-area">
-                        <input type="text" id="commentInput" placeholder="写点什么..." maxlength="200">
-                        <button id="submitCommentBtn" class="btn btn-primary" style="padding: 8px 20px;">发布</button>
-                    </div>
-                    <div id="commentList" class="comment-list-scroll">
-                        <div style="color:#bfaa8d; text-align:center; padding:20px;">暂无留言</div>
-                    </div>
-                </div>
+                <div><strong>💬 班级留言板</strong></div>
+                <div class="comment-input-area"><input type="text" id="commentInput" placeholder="写点什么..." maxlength="200"><button id="submitCommentBtn" class="btn btn-primary" style="padding:6px 16px;">发布</button></div>
+                <div id="commentList" class="comment-list-scroll" style="max-height: 240px; overflow-y: auto; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;"></div>
             </div>
         </div>
 
-        <!-- 右侧信息区（名单、抽选历史、表扬榜）-->
         <div class="info-area">
-            <div class="list-panel">
-                <div class="panel-header">📋 参选名单 <span id="totalCountSpan">61人</span></div>
-                <div id="studentList" class="student-grid"></div>
-            </div>
-            <div class="list-panel">
-                <div class="panel-header">📜 抽选历史记录 <button id="smallClearHistory" class="clear-praise">清空全部</button></div>
-                <div id="historyList" class="praise-list"><div style="color:#bfaa8d; text-align:center; padding:20px;">暂无抽取记录</div></div>
-            </div>
-            <div class="list-panel">
-                <div class="panel-header">💖 表扬光荣榜 <button id="clearAllPraiseBtn" class="clear-praise">清空表扬记录</button></div>
-                <div id="praiseList" class="praise-list"><div style="color:#bfaa8d; text-align:center; padding:20px;">✨ 暂无表扬记录 ✨</div></div>
-            </div>
+            <div class="list-panel"><div class="panel-header">📋 成员名单 <span id="totalCountSpan">61人</span></div><div id="studentList" class="student-grid"></div></div>
+            <div class="list-panel"><div class="panel-header">📜 抽选历史 <button id="smallClearHistory" class="clear-praise">清空</button></div><div id="historyList" class="praise-list"><div>暂无记录</div></div></div>
+            <div class="list-panel"><div class="panel-header">💖 表扬榜·祝福 <button id="clearAllPraiseBtn" class="clear-praise">清空</button></div><div id="praiseList" class="praise-list"><div>暂无记录</div></div></div>
         </div>
     </div>
-    <footer>📢 群公告仅创作者可编辑 | 评论区全员可留言 | 抽选数据自动保存</footer>
+    <footer>💬 评论格式：【头像】昵称(真实姓名)：内容 | 🎉 当抽选2人时「一起表扬」会产生公开祝福记录</footer>
 </div>
 
-<!-- 修改密码模态框 -->
-<div id="passwordModal" class="modal">
+<!-- 个性设置模态框 (头像/昵称/个人主页) -->
+<div id="profileModal" class="modal">
     <div class="modal-content">
-        <h3>修改密码（仅创作者）</h3>
-        <input type="password" id="newPwd1" placeholder="新密码">
-        <input type="password" id="newPwd2" placeholder="确认新密码">
-        <div>
-            <button id="confirmPwdBtn">确认修改</button>
-            <button id="cancelPwdBtn">取消</button>
+        <h3>✨ 我的个人主页</h3>
+        <div><strong>选择头像</strong><br>
+            <div id="avatarSelector">
+                <span class="avatar-option" data-avatar="😀">😀</span>
+                <span class="avatar-option" data-avatar="😎">😎</span>
+                <span class="avatar-option" data-avatar="🥰">🥰</span>
+                <span class="avatar-option" data-avatar="🐱">🐱</span>
+                <span class="avatar-option" data-avatar="⭐">⭐</span>
+                <span class="avatar-option" data-avatar="🎓">🎓</span>
+            </div>
         </div>
-        <div id="pwdMsg" style="color:#c95a3a; font-size:0.8rem; margin-top:8px;"></div>
+        <input type="text" id="nicknameInput" placeholder="昵称 (默认真实姓名)" maxlength="20">
+        <textarea id="bioInput" rows="2" placeholder="个人主页签名 / 一句话介绍"></textarea>
+        <button id="saveProfileBtn" class="btn btn-primary">保存设置</button>
+        <button id="closeProfileBtn" class="btn btn-secondary" style="margin-top:8px;">取消</button>
     </div>
 </div>
 
+<!-- 修改密码模态框 (仅创作者) -->
+<div id="passwordModal" class="modal"><div class="modal-content"><h3>修改密码</h3><input type="password" id="newPwd1" placeholder="新密码"><input type="password" id="newPwd2" placeholder="确认"><div><button id="confirmPwdBtn">确认</button><button id="cancelPwdBtn">取消</button></div><div id="pwdMsg"></div></div></div>
 <!-- 编辑公告模态框 -->
-<div id="announceModal" class="modal">
-    <div class="modal-content">
-        <h3>编辑群公告</h3>
-        <textarea id="announceInput" rows="4" style="border-radius: 24px; padding: 12px;" placeholder="输入公告内容..."></textarea>
-        <div>
-            <button id="saveAnnounceBtn">保存</button>
-            <button id="cancelAnnounceBtn">取消</button>
-        </div>
-    </div>
-</div>
+<div id="announceModal" class="modal"><div class="modal-content"><h3>编辑群公告</h3><textarea id="announceInput" rows="3"></textarea><div><button id="saveAnnounceBtn">保存</button><button id="cancelAnnounceBtn">取消</button></div></div></div>
 
 <script>
     // ==================== 固定名单 ====================
-    const students = [
-        "陈庆楠", "陈奕文", "陈子菡", "戴淳曦", "翟轩", "杜笑融", "郭悦涵", "郝博韬", "何泽浩", "后鑫雅",
-        "胡皓翔", "季宁远", "井浩哲", "孔佳芮", "来小杨", "李涂韵", "梁徐嘉", "刘瀚聪", "刘鑫焱", "鲁雨昊",
-        "吕廷舟", "马朔", "马奕阳", "潘思茗", "乔海盛", "阮孙唯", "邵熙珑", "沈牧晨", "孙晨皓", "孙立恒",
-        "唐邦铭", "宛鸿旭", "汪彤", "汪乐知", "汪艺欣", "王晟睿", "王晨冉", "王旭升", "王奕晨", "王之瑜",
-        "魏新浩", "温鉴杰", "武照涵", "武子涵", "吴辰悦", "邬语昕", "徐凡昊", "薛宸皓", "姚泓嘉", "姚忆铭",
-        "姚智中", "尹子昊", "占泰铭", "张陈熙", "张景行", "郑浩明", "周笃敬", "周真辰", "周梓豪", "朱兴邦"
-    ];
+    const students = ["陈庆楠","陈奕文","陈子菡","戴淳曦","翟轩","杜笑融","郭悦涵","郝博韬","何泽浩","后鑫雅","胡皓翔","季宁远","井浩哲","孔佳芮","来小杨","李涂韵","梁徐嘉","刘瀚聪","刘鑫焱","鲁雨昊","吕廷舟","马朔","马奕阳","潘思茗","乔海盛","阮孙唯","邵熙珑","沈牧晨","孙晨皓","孙立恒","唐邦铭","宛鸿旭","汪彤","汪乐知","汪艺欣","王晟睿","王晨冉","王旭升","王奕晨","王之瑜","魏新浩","温鉴杰","武照涵","武子涵","吴辰悦","邬语昕","徐凡昊","薛宸皓","姚泓嘉","姚忆铭","姚智中","尹子昊","占泰铭","张陈熙","张景行","郑浩明","周笃敬","周真辰","周梓豪","朱兴邦"];
     const teacherName = "吴年生";
     const FULL_LIST = [...students, teacherName];
     const TOTAL_PEOPLE = FULL_LIST.length;
@@ -629,17 +516,19 @@
     const STORAGE_APP_DATA = "magicPickerData";
     const STORAGE_COMMENTS = "class_comments";
     const STORAGE_ANNOUNCE = "class_announcement";
+    const STORAGE_PROFILES = "user_profiles";  // 存储每个真实姓名的 { avatar, nickname, bio }
 
-    // 全局状态
+    // 全局变量
     let currentUser = null;
     let isCreator = false;
     let historyRecords = [];
-    let praiseRecords = [];
+    let praiseRecords = [];      // 表扬记录（包括特殊祝福）
     let nextHistoryId = 1;
     let nextPraiseId = 1;
     let currentSelectedNames = [];
     let comments = [];
-    let announcement = "欢迎来到班级互动平台！在这里可以表扬同学、随机选人。";
+    let announcement = "欢迎来到班级互动平台！可以设置个性头像和昵称，评论会展示你的个性形象。";
+    let userProfiles = {};       // key: 真实姓名
 
     // DOM 元素
     const loginPanel = document.getElementById("loginPanel");
@@ -652,375 +541,261 @@
     const currentUserNameSpan = document.getElementById("currentUserName");
     const logoutBtn = document.getElementById("logoutBtn");
     const settingsBtn = document.getElementById("settingsBtn");
+    const profileBtn = document.getElementById("profileBtn");
     const editAnnounceBtn = document.getElementById("editAnnounceBtn");
     const announcementTextDiv = document.getElementById("announcementText");
+    const commentInput = document.getElementById("commentInput");
+    const submitCommentBtn = document.getElementById("submitCommentBtn");
+    const commentListDiv = document.getElementById("commentList");
+    const selectedDisplay = document.getElementById("selectedDisplay");
+    const pickCountInput = document.getElementById("pickCount");
+    const batchPraiseBtn = document.getElementById("batchPraiseBtn");
+    const pickBtn = document.getElementById("pickBtn");
+    const clearAllHistoryBtn = document.getElementById("clearAllHistoryBtn");
+    const smallClearHistory = document.getElementById("smallClearHistory");
+    const clearAllPraiseBtn = document.getElementById("clearAllPraiseBtn");
+    const decBtn = document.getElementById("decCount");
+    const incBtn = document.getElementById("incCount");
+    const studentListDiv = document.getElementById("studentList");
+    const historyListDiv = document.getElementById("historyList");
+    const praiseListDiv = document.getElementById("praiseList");
+    const totalCountSpan = document.getElementById("totalCountSpan");
+
+    // 个性设置模态框
+    const profileModal = document.getElementById("profileModal");
+    const nicknameInput = document.getElementById("nicknameInput");
+    const bioInput = document.getElementById("bioInput");
+    const saveProfileBtn = document.getElementById("saveProfileBtn");
+    const closeProfileBtn = document.getElementById("closeProfileBtn");
+    let selectedAvatar = "😀";
+    const avatarOptions = document.querySelectorAll(".avatar-option");
+
+    // ========== 个性设置存储 ==========
+    function loadProfiles() {
+        const raw = localStorage.getItem(STORAGE_PROFILES);
+        if (raw) {
+            try { userProfiles = JSON.parse(raw); } catch(e){ userProfiles = {}; }
+        }
+    }
+    function saveProfiles() {
+        localStorage.setItem(STORAGE_PROFILES, JSON.stringify(userProfiles));
+    }
+    function getUserProfile(realName) {
+        if (!userProfiles[realName]) {
+            return { avatar: "😀", nickname: realName, bio: "" };
+        }
+        return userProfiles[realName];
+    }
+    function updateProfile(realName, avatar, nickname, bio) {
+        userProfiles[realName] = { avatar, nickname: nickname || realName, bio };
+        saveProfiles();
+    }
+    function openProfileModal() {
+        if (!currentUser) return;
+        const profile = getUserProfile(currentUser);
+        selectedAvatar = profile.avatar;
+        // 更新选择器高亮
+        avatarOptions.forEach(opt => {
+            if (opt.getAttribute("data-avatar") === selectedAvatar) opt.classList.add("selected");
+            else opt.classList.remove("selected");
+        });
+        nicknameInput.value = (profile.nickname === currentUser ? "" : profile.nickname);
+        bioInput.value = profile.bio || "";
+        profileModal.style.display = "flex";
+    }
+    avatarOptions.forEach(opt => {
+        opt.addEventListener("click", () => {
+            selectedAvatar = opt.getAttribute("data-avatar");
+            avatarOptions.forEach(o => o.classList.remove("selected"));
+            opt.classList.add("selected");
+        });
+    });
+    saveProfileBtn.addEventListener("click", () => {
+        let nickname = nicknameInput.value.trim();
+        if (!nickname) nickname = currentUser;
+        const bio = bioInput.value.trim();
+        updateProfile(currentUser, selectedAvatar, nickname, bio);
+        profileModal.style.display = "none";
+        renderComments();  // 刷新评论显示
+    });
+    closeProfileBtn.addEventListener("click", () => { profileModal.style.display = "none"; });
+    profileModal.addEventListener("click", (e) => { if (e.target === profileModal) profileModal.style.display = "none"; });
+
+    // 生成评论显示格式: 【头像】昵称(真实姓名)：内容
+    function formatCommentDisplay(comment) {
+        const profile = getUserProfile(comment.user);
+        const avatar = profile.avatar;
+        const nickname = profile.nickname || comment.user;
+        const realName = comment.user;
+        return `【${avatar}】${nickname}(${realName})：${comment.content}`;
+    }
+
+    // 公告功能
+    function loadAnnouncement() { const saved = localStorage.getItem(STORAGE_ANNOUNCE); if(saved) announcement = saved; announcementTextDiv.innerText = announcement; }
+    function saveAnnouncement(text) { announcement = text; localStorage.setItem(STORAGE_ANNOUNCE, announcement); announcementTextDiv.innerText = announcement; }
+    function showAnnounceModal() { if (!isCreator) return; announceInput.value = announcement; announceModal.style.display = "flex"; }
+    function closeAnnounceModal() { announceModal.style.display = "none"; }
+    function saveAnnounceFromModal() { const newText = announceInput.value.trim(); if(newText) saveAnnouncement(newText); closeAnnounceModal(); }
     const announceModal = document.getElementById("announceModal");
     const announceInput = document.getElementById("announceInput");
     const saveAnnounceBtn = document.getElementById("saveAnnounceBtn");
     const cancelAnnounceBtn = document.getElementById("cancelAnnounceBtn");
-    const commentInput = document.getElementById("commentInput");
-    const submitCommentBtn = document.getElementById("submitCommentBtn");
-    const commentListDiv = document.getElementById("commentList");
-
-    // ========== 公告功能 ==========
-    function loadAnnouncement() {
-        const saved = localStorage.getItem(STORAGE_ANNOUNCE);
-        if (saved) announcement = saved;
-        announcementTextDiv.innerText = announcement;
-    }
-    function saveAnnouncement(text) {
-        announcement = text;
-        localStorage.setItem(STORAGE_ANNOUNCE, announcement);
-        announcementTextDiv.innerText = announcement;
-    }
-    function showAnnounceModal() {
-        if (!isCreator) return;
-        announceInput.value = announcement;
-        announceModal.style.display = "flex";
-    }
-    function closeAnnounceModal() { announceModal.style.display = "none"; }
-    function saveAnnounceFromModal() {
-        const newText = announceInput.value.trim();
-        if (newText) {
-            saveAnnouncement(newText);
-        }
-        closeAnnounceModal();
-    }
     editAnnounceBtn.addEventListener("click", showAnnounceModal);
     saveAnnounceBtn.addEventListener("click", saveAnnounceFromModal);
     cancelAnnounceBtn.addEventListener("click", closeAnnounceModal);
     announceModal.addEventListener("click", (e) => { if (e.target === announceModal) closeAnnounceModal(); });
 
-    // ========== 评论功能 ==========
-    function loadComments() {
-        const raw = localStorage.getItem(STORAGE_COMMENTS);
-        if (raw) {
-            try {
-                comments = JSON.parse(raw);
-                if (!Array.isArray(comments)) comments = [];
-            } catch(e) { comments = []; }
-        } else {
-            comments = [];
-        }
-        renderComments();
-    }
-    function saveComments() {
-        localStorage.setItem(STORAGE_COMMENTS, JSON.stringify(comments));
-    }
-    function formatTime(date) {
-        return date.toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
-    }
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    // 评论功能
+    function loadComments() { const raw = localStorage.getItem(STORAGE_COMMENTS); if(raw) { try { comments = JSON.parse(raw); if(!Array.isArray(comments)) comments=[]; } catch(e){ comments=[]; } } else comments = []; renderComments(); }
+    function saveComments() { localStorage.setItem(STORAGE_COMMENTS, JSON.stringify(comments)); }
     function renderComments() {
         if (!commentListDiv) return;
-        if (comments.length === 0) {
-            commentListDiv.innerHTML = '<div style="color:#bfaa8d; text-align:center; padding:20px;">💬 暂无留言，来说两句吧～</div>';
-            return;
-        }
+        if (comments.length === 0) { commentListDiv.innerHTML = '<div style="color:#bfaa8d; text-align:center; padding:20px;">暂无留言</div>'; return; }
         commentListDiv.innerHTML = "";
         [...comments].reverse().forEach(comment => {
-            const itemDiv = document.createElement("div");
-            itemDiv.className = "comment-item";
-            itemDiv.innerHTML = `
-                <div class="comment-header">
-                    <span>${escapeHtml(comment.user)}</span>
-                    <span class="comment-time">${formatTime(new Date(comment.time))}</span>
-                </div>
-                <div class="comment-content">${escapeHtml(comment.content)}</div>
-            `;
-            commentListDiv.appendChild(itemDiv);
+            const item = document.createElement("div"); item.className = "comment-item";
+            const displayText = formatCommentDisplay(comment);
+            item.innerHTML = `<div class="comment-header"><span>💬</span><span class="comment-time">${new Date(comment.time).toLocaleTimeString()}</span></div>
+                              <div class="comment-content">${escapeHtml(displayText)}</div>`;
+            commentListDiv.appendChild(item);
         });
     }
     function addComment(content) {
         if (!currentUser) return false;
         if (!content.trim()) return false;
-        const newComment = {
-            id: Date.now(),
-            user: currentUser,
-            content: content.trim(),
-            time: new Date().toISOString()
-        };
+        const newComment = { id: Date.now(), user: currentUser, content: content.trim(), time: new Date().toISOString() };
         comments.push(newComment);
         saveComments();
         renderComments();
         return true;
     }
-    submitCommentBtn.addEventListener("click", () => {
-        const content = commentInput.value.trim();
-        if (!content) return;
-        if (addComment(content)) commentInput.value = "";
-    });
-    commentInput.addEventListener("keypress", (e) => { if (e.key === "Enter") submitCommentBtn.click(); });
+    submitCommentBtn.addEventListener("click", () => { const c = commentInput.value.trim(); if(c) { addComment(c); commentInput.value = ""; } });
+    commentInput.addEventListener("keypress", e => { if(e.key === "Enter") submitCommentBtn.click(); });
 
-    // ========== 登录逻辑 ==========
-    function checkLogin() {
-        const name = loginNameInput.value.trim();
-        if (!name) { loginError.innerText = "请输入姓名"; return false; }
-        if (!FULL_LIST.includes(name)) { loginError.innerText = "姓名不在班级名单中"; return false; }
-        if (name === CREATOR_NAME) {
-            const pwd = loginPasswordInput.value;
-            let storedPwd = localStorage.getItem(STORAGE_PWD_KEY);
-            if (!storedPwd) storedPwd = DEFAULT_PWD;
-            if (pwd !== storedPwd) { loginError.innerText = "密码错误"; return false; }
-            isCreator = true;
-        } else {
-            isCreator = false;
-        }
-        currentUser = name;
-        return true;
-    }
-    function showLogin() {
-        loginPanel.style.display = "block";
-        appContainer.style.display = "none";
-        loginNameInput.value = "";
-        loginPasswordInput.value = "";
-        passwordGroup.style.display = "none";
-        loginError.innerText = "";
-    }
-    function showApp() {
-        loginPanel.style.display = "none";
-        appContainer.style.display = "block";
-        currentUserNameSpan.innerText = currentUser + (isCreator ? " (创作者)" : "");
-        settingsBtn.style.display = isCreator ? "inline-block" : "none";
-        editAnnounceBtn.style.display = isCreator ? "inline-block" : "none";
-        loadAppData();
-        loadComments();
-        loadAnnouncement();
-        renderAll();
-        document.getElementById("pickCount").max = TOTAL_PEOPLE;
-        document.getElementById("pickCount").value = 1;
-    }
-    function logout() { currentUser = null; isCreator = false; showLogin(); }
-    loginNameInput.addEventListener("input", function() {
-        if (loginNameInput.value.trim() === CREATOR_NAME) passwordGroup.style.display = "block";
-        else { passwordGroup.style.display = "none"; loginPasswordInput.value = ""; }
-        loginError.innerText = "";
-    });
-    loginBtn.addEventListener("click", () => { if (checkLogin()) showApp(); });
-    logoutBtn.addEventListener("click", logout);
-
-    // ========== 修改密码 ==========
-    const passwordModal = document.getElementById("passwordModal");
-    const newPwd1 = document.getElementById("newPwd1");
-    const newPwd2 = document.getElementById("newPwd2");
-    const confirmPwdBtn = document.getElementById("confirmPwdBtn");
-    const cancelPwdBtn = document.getElementById("cancelPwdBtn");
-    const pwdMsg = document.getElementById("pwdMsg");
-    function closePwdModal() { passwordModal.style.display = "none"; }
-    settingsBtn.addEventListener("click", () => { if (isCreator) passwordModal.style.display = "flex"; });
-    cancelPwdBtn.addEventListener("click", closePwdModal);
-    confirmPwdBtn.addEventListener("click", () => {
-        const p1 = newPwd1.value, p2 = newPwd2.value;
-        if (!p1 || !p2) { pwdMsg.innerText = "请填写新密码"; return; }
-        if (p1 !== p2) { pwdMsg.innerText = "两次输入不一致"; return; }
-        if (p1.length < 4) { pwdMsg.innerText = "密码至少4位"; return; }
-        localStorage.setItem(STORAGE_PWD_KEY, p1);
-        pwdMsg.innerText = "修改成功！";
-        setTimeout(closePwdModal, 1000);
-    });
-    passwordModal.addEventListener("click", e => { if (e.target === passwordModal) closePwdModal(); });
-
-    // ========== 原版随机选人核心功能 ==========
-    const selectedDisplay = document.getElementById("selectedDisplay");
-    const pickCountInput = document.getElementById("pickCount");
-    const studentListDiv = document.getElementById("studentList");
-    const historyListDiv = document.getElementById("historyList");
-    const praiseListDiv = document.getElementById("praiseList");
-    const totalCountSpan = document.getElementById("totalCountSpan");
-    const batchPraiseBtn = document.getElementById("batchPraiseBtn");
-    const decBtn = document.getElementById("decCount");
-    const incBtn = document.getElementById("incCount");
-    const pickBtn = document.getElementById("pickBtn");
-    const clearAllHistoryBtn = document.getElementById("clearAllHistoryBtn");
-    const smallClearHistory = document.getElementById("smallClearHistory");
-    const clearAllPraiseBtn = document.getElementById("clearAllPraiseBtn");
-
-    function getRandomDistinct(arr, n) {
-        if (n > arr.length) n = arr.length;
-        const shuffled = [...arr];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled.slice(0, n);
-    }
-    function showHeartAnimation(x, y) {
-        const heart = document.createElement('div');
-        heart.className = 'heart-float';
-        heart.innerHTML = '❤️';
-        heart.style.left = (x - 20) + 'px';
-        heart.style.top = (y - 20) + 'px';
-        document.body.appendChild(heart);
-        setTimeout(() => { if (heart.parentNode) heart.remove(); }, 1200);
-    }
-    function showBatchHearts(count) {
-        const cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-        for (let i = 0; i < Math.min(count, 20); i++) {
-            setTimeout(() => {
-                const rx = cx + (Math.random() - 0.5) * 200;
-                const ry = cy + (Math.random() - 0.5) * 150;
-                showHeartAnimation(rx, ry);
-            }, i * 60);
-        }
-    }
-    function addPraiseRecord(name, showAnim = true, ex=null, ey=null) {
-        if (showAnim) {
-            let x = ex !== null ? ex : window.innerWidth/2;
-            let y = ey !== null ? ey : window.innerHeight/2;
-            showHeartAnimation(x, y);
-        }
-        praiseRecords.unshift({ id: nextPraiseId++, name, timestamp: new Date() });
-        if (praiseRecords.length > 200) praiseRecords = praiseRecords.slice(0,200);
+    // 随机选人核心
+    function getRandomDistinct(arr, n) { if(n>arr.length) n=arr.length; const shuffled=[...arr]; for(let i=shuffled.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; } return shuffled.slice(0,n); }
+    function formatTime(date) { return date.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+    function showHeartAnimation(x,y) { const heart=document.createElement('div'); heart.className='heart-float'; heart.innerHTML='❤️'; heart.style.left=(x-20)+'px'; heart.style.top=(y-20)+'px'; document.body.appendChild(heart); setTimeout(()=>{if(heart.parentNode) heart.remove();},1200); }
+    function addPraiseRecord(message, isBlessing = false) {
+        const record = { id: nextPraiseId++, text: message, timestamp: new Date(), isBlessing };
+        praiseRecords.unshift(record);
+        if(praiseRecords.length>200) praiseRecords=praiseRecords.slice(0,200);
         renderPraiseList();
         saveAppData();
     }
+    // 集体表扬 (仅当抽选人数为2时触发特殊祝福)
     function batchPraiseCurrent() {
-        if (!currentSelectedNames.length) { alert("当前没有抽选结果"); return; }
-        for (let name of currentSelectedNames) addPraiseRecord(name, false);
-        showBatchHearts(currentSelectedNames.length);
-        const toast = document.createElement('div');
-        toast.innerText = `✨ 一起表扬了 ${currentSelectedNames.length} 位同学 ✨`;
-        toast.style.cssText = 'position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#2d5a4c; color:white; padding:10px 24px; border-radius:40px; z-index:2000;';
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
-    }
-    function renderStudentList() {
-        studentListDiv.innerHTML = "";
-        FULL_LIST.forEach(name => {
-            const chip = document.createElement("div");
-            chip.className = "student-chip";
-            if (name === teacherName) chip.classList.add("teacher");
-            chip.textContent = name;
-            studentListDiv.appendChild(chip);
-        });
-        totalCountSpan.innerText = `${TOTAL_PEOPLE}人`;
-    }
-    function renderHistory() {
-        if (historyRecords.length === 0) {
-            historyListDiv.innerHTML = '<div style="color:#bfaa8d; text-align:center; padding:20px;">✨ 暂无抽取记录 ✨</div>';
-            return;
+        if (!currentSelectedNames.length) { alert("没有抽选结果"); return; }
+        if (currentSelectedNames.length === 2) {
+            const [a, b] = currentSelectedNames;
+            const blessing = `${currentUser} 表扬了 ${a} 和 ${b}，让我们祝福他们！🎉`;
+            addPraiseRecord(blessing, true);
+            // 弹出爱心特效
+            for(let i=0;i<10;i++) setTimeout(()=>{ showHeartAnimation(window.innerWidth/2, window.innerHeight/2); }, i*70);
+            const toast = document.createElement('div'); toast.innerText = `✨ ${blessing} ✨`; toast.style.cssText = 'position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#c23d1f; color:white; padding:10px 20px; border-radius:40px; z-index:2000;'; document.body.appendChild(toast); setTimeout(()=>toast.remove(),3000);
+        } else {
+            alert("集体表扬仅当抽选人数为2人时才会产生祝福记录～");
         }
-        historyListDiv.innerHTML = "";
-        [...historyRecords].reverse().forEach(record => {
-            const item = document.createElement("div");
-            item.className = "praise-record";
-            item.innerHTML = `<span style="font-weight:600;">🎲 ${record.names.join("、")}</span>
-                              <span style="font-size:0.65rem;">${formatTime(record.timestamp)}</span>
-                              <button class="delete-single" data-id="${record.id}">✕</button>`;
-            historyListDiv.appendChild(item);
-        });
-        document.querySelectorAll('.delete-single').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const id = parseInt(btn.getAttribute('data-id'));
-                historyRecords = historyRecords.filter(r => r.id !== id);
-                renderHistory();
-                saveAppData();
-            });
-        });
     }
     function renderPraiseList() {
-        if (praiseRecords.length === 0) {
-            praiseListDiv.innerHTML = '<div style="color:#bfaa8d; text-align:center; padding:20px;">✨ 暂无表扬记录 ✨</div>';
-            return;
-        }
-        praiseListDiv.innerHTML = "";
-        praiseRecords.slice(0,100).forEach(record => {
-            const item = document.createElement("div");
-            item.className = "praise-record";
-            item.innerHTML = `<span class="praise-name">❤️ ${record.name}</span><span class="praise-time">${formatTime(record.timestamp)}</span>`;
-            praiseListDiv.appendChild(item);
+        if(praiseRecords.length===0) { praiseListDiv.innerHTML='<div style="color:#bfaa8d; text-align:center; padding:20px;">暂无记录</div>'; return; }
+        praiseListDiv.innerHTML="";
+        praiseRecords.slice().reverse().forEach(rec => {
+            const div=document.createElement("div"); div.className="praise-record";
+            div.innerHTML=`<span>${rec.isBlessing ? '🎉 祝福 · ' : '❤️ '}${escapeHtml(rec.text)}</span><span style="font-size:0.65rem;">${formatTime(rec.timestamp)}</span>`;
+            praiseListDiv.appendChild(div);
         });
+    }
+    function renderHistory() { /* 保持原有抽选历史不变 */ 
+        if(historyRecords.length===0){ historyListDiv.innerHTML='<div>暂无记录</div>'; return; }
+        historyListDiv.innerHTML="";
+        [...historyRecords].reverse().forEach(rec=>{
+            const div=document.createElement("div"); div.className="praise-record";
+            div.innerHTML=`<span>🎲 ${rec.names.join("、")}</span><span>${formatTime(rec.timestamp)}</span><button class="delete-single" data-id="${rec.id}">✕</button>`;
+            historyListDiv.appendChild(div);
+        });
+        document.querySelectorAll('.delete-single').forEach(btn=>{ btn.onclick=(e)=>{ e.stopPropagation(); const id=parseInt(btn.dataset.id); historyRecords=historyRecords.filter(r=>r.id!==id); renderHistory(); saveAppData(); }; });
     }
     function displaySelectedWithPraise(selectedNames) {
         currentSelectedNames = selectedNames || [];
-        if (!selectedNames.length) {
-            selectedDisplay.innerHTML = '<div class="placeholder-tip">✨ 点击「随机抽取」✨</div>';
-            batchPraiseBtn.style.display = 'none';
-            return;
-        }
-        batchPraiseBtn.style.display = 'inline-block';
-        selectedDisplay.innerHTML = "";
-        selectedNames.forEach(name => {
-            const bubble = document.createElement("div");
-            bubble.className = "name-bubble";
-            bubble.innerHTML = `<span>${escapeHtml(name)}</span><button class="praise-btn" style="margin-left:8px;">❤️ 表扬</button>`;
-            bubble.querySelector('.praise-btn').addEventListener('click', (e) => {
-                e.stopPropagation();
-                const rect = e.target.getBoundingClientRect();
-                addPraiseRecord(name, true, rect.left + rect.width/2, rect.top + rect.height/2);
-            });
+        if(!selectedNames.length){ selectedDisplay.innerHTML='<div class="placeholder-tip">✨ 点击抽取 ✨</div>'; batchPraiseBtn.style.display='none'; return; }
+        batchPraiseBtn.style.display = (selectedNames.length===2) ? 'inline-block' : 'none';
+        selectedDisplay.innerHTML="";
+        selectedNames.forEach(name=>{
+            const bubble=document.createElement("div"); bubble.className="name-bubble";
+            bubble.innerHTML=`<span>${escapeHtml(name)}</span><button class="praise-btn" style="margin-left:8px;">❤️</button>`;
+            bubble.querySelector('.praise-btn').onclick=(e)=>{
+                e.stopPropagation(); const rect=e.target.getBoundingClientRect(); showHeartAnimation(rect.left+rect.width/2, rect.top+rect.height/2);
+                addPraiseRecord(`${currentUser} 表扬了 ${name}！`, false);
+            };
             selectedDisplay.appendChild(bubble);
         });
     }
     function performPick() {
-        if (FULL_LIST.length === 0) return;
-        let n = parseInt(pickCountInput.value, 10);
-        if (isNaN(n) || n < 1) n = 1;
-        if (n > TOTAL_PEOPLE) { n = TOTAL_PEOPLE; pickCountInput.value = n; }
+        let n = parseInt(pickCountInput.value,10); if(isNaN(n)||n<1) n=1; if(n>TOTAL_PEOPLE) n=TOTAL_PEOPLE;
         const selected = getRandomDistinct(FULL_LIST, n);
         displaySelectedWithPraise(selected);
         historyRecords.unshift({ id: nextHistoryId++, names: [...selected], timestamp: new Date() });
-        if (historyRecords.length > 200) historyRecords = historyRecords.slice(0,200);
-        renderHistory();
-        saveAppData();
+        if(historyRecords.length>200) historyRecords=historyRecords.slice(0,200);
+        renderHistory(); saveAppData();
     }
-    function adjustCount(delta) {
-        let val = parseInt(pickCountInput.value,10) || 1;
-        let nv = val + delta;
-        if (nv < 1) nv = 1;
-        if (nv > TOTAL_PEOPLE) nv = TOTAL_PEOPLE;
-        pickCountInput.value = nv;
+    function adjustCount(delta) { let v=parseInt(pickCountInput.value,10)||1; let nv=v+delta; if(nv<1) nv=1; if(nv>TOTAL_PEOPLE) nv=TOTAL_PEOPLE; pickCountInput.value=nv; }
+    function clearAllHistory() { if(confirm("清空抽选历史？")){ historyRecords=[]; renderHistory(); saveAppData(); } }
+    function clearAllPraise() { if(confirm("清空表扬榜？")){ praiseRecords=[]; renderPraiseList(); saveAppData(); } }
+    function saveAppData() { localStorage.setItem(STORAGE_APP_DATA, JSON.stringify({ history:historyRecords, praise:praiseRecords, nextHistoryId, nextPraiseId })); }
+    function loadAppData() { const raw=localStorage.getItem(STORAGE_APP_DATA); if(raw){ try{ const d=JSON.parse(raw); if(d.history) historyRecords=d.history; if(d.praise) praiseRecords=d.praise; if(d.nextHistoryId) nextHistoryId=d.nextHistoryId; if(d.nextPraiseId) nextPraiseId=d.nextPraiseId; }catch(e){} } }
+    function renderStudentList() { studentListDiv.innerHTML=""; FULL_LIST.forEach(n=>{ const chip=document.createElement("div"); chip.className="student-chip"; if(n===teacherName) chip.classList.add("teacher"); chip.textContent=n; studentListDiv.appendChild(chip); }); totalCountSpan.innerText=`${TOTAL_PEOPLE}人`; }
+
+    // 登录逻辑
+    function checkLogin() {
+        const name = loginNameInput.value.trim();
+        if(!name){ loginError.innerText="请输入姓名"; return false; }
+        if(!FULL_LIST.includes(name)){ loginError.innerText="不在班级名单中"; return false; }
+        if(name===CREATOR_NAME){
+            const pwd=loginPasswordInput.value;
+            let stored=localStorage.getItem(STORAGE_PWD_KEY);
+            if(!stored) stored=DEFAULT_PWD;
+            if(pwd!==stored){ loginError.innerText="密码错误"; return false; }
+            isCreator=true;
+        } else isCreator=false;
+        currentUser=name;
+        return true;
     }
-    function clearAllHistory() { if (confirm("清空所有抽选历史？")) { historyRecords = []; renderHistory(); saveAppData(); } }
-    function clearAllPraise() { if (confirm("清空所有表扬记录？")) { praiseRecords = []; renderPraiseList(); saveAppData(); } }
-    function saveAppData() {
-        localStorage.setItem(STORAGE_APP_DATA, JSON.stringify({
-            history: historyRecords,
-            praise: praiseRecords,
-            nextHistoryId, nextPraiseId
-        }));
+    function showLogin(){ loginPanel.style.display="block"; appContainer.style.display="none"; loginNameInput.value=""; loginPasswordInput.value=""; passwordGroup.style.display="none"; loginError.innerText=""; }
+    function showApp(){
+        loginPanel.style.display="none"; appContainer.style.display="block";
+        currentUserNameSpan.innerText=currentUser+(isCreator?" (创作者)":"");
+        settingsBtn.style.display=isCreator?"inline-block":"none";
+        editAnnounceBtn.style.display=isCreator?"inline-block":"none";
+        loadAppData(); loadComments(); loadAnnouncement(); loadProfiles();
+        renderStudentList(); renderHistory(); renderPraiseList(); displaySelectedWithPraise([]);
+        pickCountInput.max=TOTAL_PEOPLE; pickCountInput.value=1;
     }
-    function loadAppData() {
-        const raw = localStorage.getItem(STORAGE_APP_DATA);
-        if (raw) {
-            try {
-                const data = JSON.parse(raw);
-                if (data.history) historyRecords = data.history;
-                if (data.praise) praiseRecords = data.praise;
-                if (data.nextHistoryId) nextHistoryId = data.nextHistoryId;
-                if (data.nextPraiseId) nextPraiseId = data.nextPraiseId;
-            } catch(e) {}
-        }
-    }
-    function renderAll() {
-        renderStudentList();
-        renderHistory();
-        renderPraiseList();
-        displaySelectedWithPraise([]);
-    }
-    function bindEvents() {
-        decBtn.addEventListener("click", () => adjustCount(-1));
-        incBtn.addEventListener("click", () => adjustCount(1));
-        pickBtn.addEventListener("click", performPick);
-        clearAllHistoryBtn.addEventListener("click", clearAllHistory);
-        smallClearHistory.addEventListener("click", clearAllHistory);
-        clearAllPraiseBtn.addEventListener("click", clearAllPraise);
-        batchPraiseBtn.addEventListener("click", batchPraiseCurrent);
-        pickCountInput.addEventListener("change", function() {
-            let v = parseInt(this.value);
-            if (isNaN(v) || v < 1) this.value = 1;
-            if (v > TOTAL_PEOPLE) this.value = TOTAL_PEOPLE;
-        });
-    }
-    bindEvents();
+    loginNameInput.addEventListener("input",()=>{ if(loginNameInput.value.trim()===CREATOR_NAME) passwordGroup.style.display="block"; else { passwordGroup.style.display="none"; loginPasswordInput.value=""; } loginError.innerText=""; });
+    loginBtn.addEventListener("click",()=>{ if(checkLogin()) showApp(); });
+    logoutBtn.addEventListener("click",()=>{ currentUser=null; isCreator=false; showLogin(); });
+    profileBtn.addEventListener("click",openProfileModal);
+
+    // 修改密码
+    const passwordModal = document.getElementById("passwordModal");
+    const newPwd1 = document.getElementById("newPwd1"), newPwd2 = document.getElementById("newPwd2"), confirmPwdBtn = document.getElementById("confirmPwdBtn"), cancelPwdBtn = document.getElementById("cancelPwdBtn"), pwdMsg = document.getElementById("pwdMsg");
+    function closePwdModal(){ passwordModal.style.display="none"; }
+    settingsBtn.addEventListener("click",()=>{ if(isCreator) passwordModal.style.display="flex"; });
+    cancelPwdBtn.addEventListener("click",closePwdModal);
+    confirmPwdBtn.addEventListener("click",()=>{ const p1=newPwd1.value, p2=newPwd2.value; if(!p1||!p2){ pwdMsg.innerText="请填写"; return; } if(p1!==p2){ pwdMsg.innerText="不一致"; return; } if(p1.length<4){ pwdMsg.innerText="至少4位"; return; } localStorage.setItem(STORAGE_PWD_KEY,p1); pwdMsg.innerText="修改成功！"; setTimeout(closePwdModal,1000); });
+    passwordModal.addEventListener("click",e=>{ if(e.target===passwordModal) closePwdModal(); });
+
+    // 事件绑定
+    decBtn.addEventListener("click",()=>adjustCount(-1));
+    incBtn.addEventListener("click",()=>adjustCount(1));
+    pickBtn.addEventListener("click",performPick);
+    clearAllHistoryBtn.addEventListener("click",clearAllHistory);
+    smallClearHistory.addEventListener("click",clearAllHistory);
+    clearAllPraiseBtn.addEventListener("click",clearAllPraise);
+    batchPraiseBtn.addEventListener("click",batchPraiseCurrent);
+    pickCountInput.addEventListener("change",function(){ let v=parseInt(this.value); if(isNaN(v)||v<1) this.value=1; if(v>TOTAL_PEOPLE) this.value=TOTAL_PEOPLE; });
+
+    function escapeHtml(str){ return str.replace(/[&<>]/g,function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
     showLogin();
 </script>
 </body>
